@@ -1,6 +1,6 @@
 output "data_lake_bucket_name" {
   description = "Name of the BeejanRide data lake bucket"
-  value       = google_storage_bucket.data_lake.name
+  value       = module.data_lake.name
 }
 
 output "warehouse_dataset_id" {
