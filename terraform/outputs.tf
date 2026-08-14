@@ -3,9 +3,24 @@ output "data_lake_bucket_name" {
   value       = module.data_lake.name
 }
 
-output "warehouse_dataset_id" {
-  description = "BigQuery analytics dataset ID"
-  value       = google_bigquery_dataset.warehouse.dataset_id
+output "raw_dataset_id" {
+  description = "BigQuery raw dataset ID"
+  value       = google_bigquery_dataset.layers["beejanride_raw"].dataset_id
+}
+
+output "stg_dataset_id" {
+  description = "BigQuery staging dataset ID"
+  value       = google_bigquery_dataset.layers["beejanride_stg"].dataset_id
+}
+
+output "int_dataset_id" {
+  description = "BigQuery intermediate dataset ID"
+  value       = google_bigquery_dataset.layers["beejanride_int"].dataset_id
+}
+
+output "marts_dataset_id" {
+  description = "BigQuery marts dataset ID"
+  value       = google_bigquery_dataset.layers["beejanride_marts"].dataset_id
 }
 
 output "project_number" {
