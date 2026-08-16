@@ -32,3 +32,14 @@ output "terraform_state_bucket_name" {
   description = "GCS bucket used for Terraform remote state"
   value       = google_storage_bucket.terraform_state.name
 }
+
+output "airbyte_service_account_email" {
+  description = "Service account email used by Airbyte Cloud"
+  value       = google_service_account.airbyte.email
+}
+
+output "airbyte_service_account_key" {
+  description = "Private JSON key for the Airbyte service account"
+  value       = base64decode(google_service_account_key.airbyte.private_key)
+  sensitive   = true
+}
