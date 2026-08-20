@@ -1,0 +1,64 @@
+version: 2
+
+sources:
+  - name: beejanride_raw
+    description: "Raw data ingested from the BeejanRide PostgreSQL transactional database by Airbyte."
+    database: beejanride-analytics-505416
+    schema: beejanride_raw
+
+    config:
+      loaded_at_field: _airbyte_extracted_at
+      freshness:
+        warn_after:
+          count: 1
+          period: hour
+        error_after:
+          count: 2
+          period: hour
+
+    tables:
+
+      - name: cities_raw
+        description: "Raw city records ingested from the transactional database."
+
+      - name: drivers_raw
+        description: "Raw driver records ingested from the transactional database."
+
+      - name: driver_status_events_raw
+        description: "Raw driver status events ingested from the transactional database."
+
+      - name: riders_raw
+        description: "Raw rider records ingested from the transactional database."
+
+      - name: trips_raw
+        description: "Raw trip records ingested from the transactional database."
+        columns:
+          - name: trip_id
+            description: "Unique identifier for each trip."
+            data_tests:
+              - not_null
+              - unique
+
+      - name: payments_raw
+        description: "Raw payment records ingested from the transactional database."
+        columns:
+          - name: payment_id
+            description: "Unique identifier for each payment."
+            data_tests:
+              - not_null
+              - unique
+
+          - name: status
+            description: "Raw lifecycle status of the trip."
+
+          - name: requested_at
+            description: "Timestamp when the trip was requested."
+
+          - name: pickup_at
+            description: "Timestamp when the rider was picked up."
+
+          - name: dropoff_at
+            description: "Timestamp when the rider was dropped off."
+
+          - name: _airbyte_extracted_at
+            description: "Timestamp when Airbyte extracted the record from the source system."
