@@ -1,0 +1,142 @@
+version: 2
+
+models:
+
+  - name: stg_cities
+    description: "Cleaned and standardized city records from the BeejanRide transactional database."
+    columns:
+      - name: city_id
+        description: "Unique identifier for the city."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: stg_drivers
+    description: "Cleaned and standardized driver records used for driver operations and analytics."
+    columns:
+      - name: driver_id
+        description: "Unique identifier for the driver."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: driver_status
+        description: "Current operational status of the driver."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - active
+                - inactive
+                - suspended
+
+  - name: stg_driver_status_events
+    description: "Cleaned driver status events used to track changes in driver availability and activity."
+    columns:
+      - name: event_id
+        description: "Unique identifier for the driver status event."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: driver_id
+        description: "Identifier of the driver associated with the status event."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_drivers')
+              field: driver_id
+
+  - name: stg_riders
+    description: "Cleaned and standardized rider records used for rider analytics and lifetime value calculations."
+    columns:
+      - name: rider_id
+        description: "Unique identifier for the rider."
+        data_tests:
+          - not_null
+          - unique
+
+  - name: stg_trips
+    description: "Cleaned and standardized trip records used as the foundation for operational, financial and fraud analytics."
+    columns:
+      - name: trip_id
+        description: "Unique identifier for the trip."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: rider_id
+        description: "Identifier of the rider associated with the trip."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_riders')
+              field: rider_id
+
+      - name: driver_id
+        description: "Identifier of the driver associated with the trip."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_drivers')
+              field: driver_id
+
+      - name: city_id
+        description: "Identifier of the city where the trip occurred."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_cities')
+              field: city_id
+
+      - name: trip_status
+        description: "Current status of the trip."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - cancelled
+                - completed
+
+      - name: payment_method
+        description: "Payment method selected for the trip."
+        data_tests:
+          - accepted_values:
+              values:
+                - card
+                - cash
+                - wallet
+
+  - name: stg_payments
+    description: "Cleaned and standardized payment records used for revenue, payment reliability and fraud analysis."
+    columns:
+      - name: payment_id
+        description: "Unique identifier for the payment."
+        data_tests:
+          - not_null
+          - unique
+
+      - name: trip_id
+        description: "Identifier of the trip associated with the payment."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_trips')
+              field: trip_id
+
+      - name: payment_status
+        description: "Outcome of the payment attempt."
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - failed
+                - success
+
+      - name: payment_provider
+        description: "Payment service provider used to process the transaction."
+        data_tests:
+          - accepted_values:
+              values:
+                - paypal
+                - stripe
