@@ -13,6 +13,6 @@ resource "google_bigquery_dataset_iam_member" "airbyte_raw_data_editor" {
 
 resource "google_project_iam_member" "airbyte_job_user" {
   project = var.project_id
-  role    = "roles/bigquery.jobUser"
+  role    = "roles/bigquery.user"
   member  = "serviceAccount:${google_service_account.airbyte.email}"
 }
