@@ -45,5 +45,5 @@ models:
       +materialized: view
 
     marts:
-      +schema: beejanride_mart
+      +schema: beejanride_marts
       +materialized: table

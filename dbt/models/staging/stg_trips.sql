@@ -27,7 +27,7 @@ renamed as (
         cast(rider_id as int64) as rider_id,
         cast(driver_id as int64) as driver_id,
         cast(city_id as int64) as city_id,
-        cast(vehicle_id as int64) as vehicle_id,
+        cast(vehicle_id as string) as vehicle_id,
 
         -- Trip status and payment method
         lower(trim(cast(status as string))) as trip_status,
