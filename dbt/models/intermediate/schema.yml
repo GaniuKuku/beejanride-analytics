@@ -1,0 +1,160 @@
+version: 2
+
+models:
+
+  - name: int_payments
+    description: "Trip-level payment summary derived from staged payment records. Aggregates payment attempts and isolates successful payment amounts and fees for downstream revenue calculations."
+    columns:
+
+      - name: trip_id
+        description: "Unique identifier of the trip associated with the payment activity."
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_trips')
+              field: trip_id
+
+      - name: payment_count
+        description: "Total number of payment attempts associated with the trip."
+        data_tests:
+          - not_null
+
+      - name: successful_payment_count
+        description: "Number of successful payment attempts associated with the trip."
+        data_tests:
+          - not_null
+
+      - name: successful_payment_amount
+        description: "Total monetary amount from successful payments associated with the trip."
+        data_tests:
+          - not_null
+
+      - name: successful_payment_fee
+        description: "Total processing fees associated with successful payments for the trip."
+        data_tests:
+          - not_null
+
+      - name: failed_payment_count
+        description: "Number of failed payment attempts associated with the trip."
+        data_tests:
+          - not_null
+
+      - name: multiple_payment_attempts_flag
+        description: "Indicates whether the trip had more than one payment attempt."
+        data_tests:
+          - not_null
+
+      - name: duplicate_successful_payment_flag
+        description: "Indicates whether more than one successful payment was recorded for the same trip."
+        data_tests:
+          - not_null
+
+
+  - name: int_trips
+    description: "Trip-level business transformation combining staged trip data with aggregated payment information for operational, financial and fraud analytics."
+    columns:
+
+      - name: trip_id
+        description: "Unique identifier of the trip."
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_trips')
+              field: trip_id
+
+      - name: rider_id
+        description: "Identifier of the rider associated with the trip."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_riders')
+              field: rider_id
+
+      - name: driver_id
+        description: "Identifier of the driver associated with the trip."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_drivers')
+              field: driver_id
+
+      - name: city_id
+        description: "Identifier of the city where the trip occurred."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_cities')
+              field: city_id
+
+      - name: trip_duration_minutes
+        description: "Duration of the trip in minutes, calculated from pickup to dropoff timestamps."
+
+      - name: corporate_trip_flag
+        description: "Indicates whether the trip was classified as a corporate trip."
+        data_tests:
+          - not_null
+
+      - name: net_revenue
+        description: "Revenue generated from successfully cleared payments after deducting successful payment processing fees."
+        data_tests:
+          - not_null
+
+      - name: multiple_payment_attempts_flag
+        description: "Indicates whether the trip had more than one payment attempt."
+        data_tests:
+          - not_null
+
+      - name: duplicate_successful_payment_flag
+        description: "Indicates whether multiple successful payments were recorded for the same trip."
+        data_tests:
+          - not_null
+
+      - name: failed_payment_on_completed_trip
+        description: "Indicates whether a completed trip had at least one failed payment attempt."
+        data_tests:
+          - not_null
+
+      - name: extreme_surge_flag
+        description: "Indicates whether the trip had an extreme surge multiplier greater than 10."
+        data_tests:
+          - not_null
+
+
+  - name: int_drivers
+    description: "Driver-level business transformation containing completed trip activity and driver attributes."
+    columns:
+
+      - name: driver_id
+        description: "Unique identifier of the driver."
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_drivers')
+              field: driver_id
+
+      - name: driver_lifetime_trips
+        description: "Total number of completed trips associated with the driver."
+        data_tests:
+          - not_null
+
+
+  - name: int_riders
+    description: "Rider-level business transformation containing rider attributes and cumulative lifetime value."
+    columns:
+
+      - name: rider_id
+        description: "Unique identifier of the rider."
+        data_tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_riders')
+              field: rider_id
+
+      - name: rider_lifetime_value
+        description: "Cumulative net revenue generated by the rider from completed trips."
+        data_tests:
+          - not_null
