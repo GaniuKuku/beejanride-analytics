@@ -1,7 +1,41 @@
+-- depends_on: {{ ref('stg_payments') }}
+
+{{ config(
+    materialized='incremental',
+    unique_key='trip_id',
+    incremental_strategy='merge'
+) }}
+
 with trips as (
 
     select *
     from {{ ref('int_trips') }}
+
+    {% if is_incremental() %}
+
+    where trip_id in (
+
+        -- Trips updated recently
+        select trip_id
+        from {{ ref('int_trips') }}
+        where updated_at >= timestamp_sub(
+            (select max(updated_at) from {{ this }}),
+            interval 24 hour
+        )
+
+        union distinct
+
+        -- Trips affected by recent payment activity
+        select trip_id
+        from {{ ref('stg_payments') }}
+        where created_at >= timestamp_sub(
+            (select max(updated_at) from {{ this }}),
+            interval 24 hour
+        )
+
+    )
+
+    {% endif %}
 
 )
 
