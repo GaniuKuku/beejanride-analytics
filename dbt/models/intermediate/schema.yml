@@ -4,6 +4,12 @@ models:
 
   - name: int_payments
     description: "Trip-level payment summary derived from staged payment records. Aggregates payment attempts and isolates successful payment amounts and fees for downstream revenue calculations."
+    config:
+      meta:
+        owner: finance
+      tags:
+        - finance
+        - fraud
     columns:
 
       - name: trip_id
@@ -53,6 +59,13 @@ models:
 
   - name: int_trips
     description: "Trip-level business transformation combining staged trip data with aggregated payment information for operational, financial and fraud analytics."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - finance
+        - operations
+        - fraud
     columns:
 
       - name: trip_id
@@ -124,6 +137,11 @@ models:
 
   - name: int_drivers
     description: "Driver-level business transformation containing completed trip activity and driver attributes."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
 
       - name: driver_id
@@ -143,6 +161,12 @@ models:
 
   - name: int_riders
     description: "Rider-level business transformation containing rider attributes and cumulative lifetime value."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - finance
+        - operations
     columns:
 
       - name: rider_id

@@ -4,6 +4,11 @@ models:
 
   - name: dim_city
     description: "City dimension containing city attributes and market launch dates for geographical analysis."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: city_id
         description: "Primary key for the city."
@@ -22,6 +27,11 @@ models:
 
   - name: dim_driver
     description: "Driver dimension containing operational attributes, ratings, onboarding information, and lifetime completed-trip metrics."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: driver_id
         description: "Primary key identifying the driver."
@@ -50,6 +60,12 @@ models:
 
   - name: dim_rider
     description: "Rider dimension containing rider attributes, signup information, referral information, and lifetime value."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
+        - finance
     columns:
       - name: rider_id
         description: "Primary key identifying the rider."
@@ -69,6 +85,9 @@ models:
 
   - name: dim_date
     description: "Date dimension covering 2021 through 2030 for time-series analysis, reporting, and cohort analysis."
+    config:
+      meta:
+        owner: shared
     columns:
       - name: date_key
         description: "Integer date key in YYYYMMDD format."
@@ -108,6 +127,13 @@ models:
 
   - name: fct_trips
     description: "Trip-level fact table containing financial, operational, payment, and fraud metrics for BeejanRide trips."
+    config:
+      meta:
+        owner: finance
+      tags:
+        - finance
+        - operations
+        - fraud
     columns:
       - name: trip_id
         description: "Unique identifier for the trip and primary key of the fact table."

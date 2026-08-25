@@ -4,6 +4,11 @@ models:
 
   - name: stg_cities
     description: "Cleaned and standardized city records from the BeejanRide transactional database."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: city_id
         description: "Unique identifier for the city."
@@ -13,6 +18,11 @@ models:
 
   - name: stg_drivers
     description: "Cleaned and standardized driver records used for driver operations and analytics."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: driver_id
         description: "Unique identifier for the driver."
@@ -32,6 +42,11 @@ models:
 
   - name: stg_driver_status_events
     description: "Cleaned driver status events used to track changes in driver availability and activity."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: event_id
         description: "Unique identifier for the driver status event."
@@ -49,6 +64,11 @@ models:
 
   - name: stg_riders
     description: "Cleaned and standardized rider records used for rider analytics and lifetime value calculations."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: rider_id
         description: "Unique identifier for the rider."
@@ -58,6 +78,11 @@ models:
 
   - name: stg_trips
     description: "Cleaned and standardized trip records used as the foundation for operational, financial and fraud analytics."
+    config:
+      meta:
+        owner: operations
+      tags:
+        - operations
     columns:
       - name: trip_id
         description: "Unique identifier for the trip."
@@ -109,6 +134,12 @@ models:
 
   - name: stg_payments
     description: "Cleaned and standardized payment records used for revenue, payment reliability and fraud analysis."
+    config:
+      meta:
+        owner: finance
+      tags:
+        - finance
+        - fraud
     columns:
       - name: payment_id
         description: "Unique identifier for the payment."
