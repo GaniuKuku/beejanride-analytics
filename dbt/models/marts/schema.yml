@@ -26,7 +26,7 @@ models:
         description: "Date when BeejanRide launched operations in this city."
 
   - name: dim_driver
-    description: "Driver dimension containing operational attributes, ratings, onboarding information, and lifetime completed-trip metrics."
+    description: "{{ doc('driver_lifetime_trips') }}"
     config:
       meta:
         owner: operations
@@ -59,7 +59,7 @@ models:
 
 
   - name: dim_rider
-    description: "Rider dimension containing rider attributes, signup information, referral information, and lifetime value."
+    description: "{{ doc('rider_lifetime_value') }}"
     config:
       meta:
         owner: operations
@@ -189,37 +189,37 @@ models:
         description: "Estimated fare presented for the trip."
 
       - name: successful_payment_amount
-        description: "Total amount from successful payment attempts associated with the trip."
+        description: "{{ doc('gross_revenue') }}"
 
       - name: successful_payment_fee
         description: "Total processing fees from successful payment attempts."
 
       - name: net_revenue
-        description: "Successful payment amount less successful payment fees."
+        description: "{{ doc('net_revenue') }}"
 
       - name: surge_multiplier
         description: "Surge multiplier applied to the trip."
 
       - name: trip_duration_minutes
-        description: "Trip duration in minutes between pickup and drop-off."
+        description: "{{ doc('trip_duration_minutes') }}"
 
       - name: corporate_trip_flag
-        description: "Indicates whether the trip was a corporate trip."
+        description: "{{ doc('corporate_trip_flag') }}"
 
       - name: failed_payment_count
         description: "Number of failed payment attempts associated with the trip."
 
       - name: multiple_payment_attempts_flag
-        description: "Indicates whether more than one payment attempt was recorded for the trip."
+        description: "{{ doc('multiple_payment_attempts') }}"
 
       - name: duplicate_successful_payment_flag
-        description: "Indicates whether multiple successful payments were recorded for the same trip."
+        description: "{{ doc('duplicate_successful_payment') }}"
 
       - name: failed_payment_on_completed_trip
-        description: "Indicates whether a completed trip had at least one failed payment attempt."
+        description: "{{ doc('failed_payment_on_completed_trip') }}"
 
       - name: extreme_surge_flag
-        description: "Indicates whether the trip had a surge multiplier greater than 10."
+        description: "{{ doc('extreme_surge_flag') }}"
 
       - name: requested_at
         description: "Timestamp when the trip was requested."
