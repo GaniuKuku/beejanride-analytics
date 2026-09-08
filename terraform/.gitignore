@@ -7,13 +7,13 @@ crash.*.log
 
 # Terraform variable files
 # Uncomment if these contain secrets
-# *.tfvars
 # *.tfvars.json
 # Terraform override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+*_tfvars
 # OS files
 .DS_Store
 Thumbs.db
