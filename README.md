@@ -23,80 +23,26 @@ The platform is designed to demonstrate how modern data engineering practices ca
 
 ## Business Problem
 
-BeejanRide's operational data is stored in a transactional PostgreSQL database containing information about:
+BeejanRide's operational database contains data about trips, riders, drivers, payments, and cities. While this supports day-to-day operations, the transactional structure is not designed for scalable business analytics.
 
-- Trips
-- Riders
-- Drivers
-- Driver status events
-- Payments
-- Cities
+The platform therefore needed a reliable way to:
 
-While this data supports day-to-day operations, querying the transactional system directly for business reporting creates several challenges:
+- Ingest operational data into an analytical warehouse
+- Transform raw data into business-ready models
+- Apply consistent business logic
+- Validate data quality
+- Automate the ELT workflow
+- Deliver actionable business insights
 
-- Analytical queries can become complex and difficult to maintain.
-- Business metrics can be calculated inconsistently.
-- Data ingestion may require manual intervention.
-- Data quality issues can go undetected.
-- Historical changes to important entities such as drivers can be difficult to analyse.
-- Reporting is dependent on raw transactional structures rather than business-friendly models.
-- There is no automated workflow connecting ingestion, transformation, testing, and reporting.
+The resulting platform supports analysis across:
 
-The goal of this project is therefore to build a **reliable end-to-end analytical platform** that separates operational workloads from analytical workloads and provides a repeatable path from source data to business insight.
+**Revenue · Driver Performance · Rider Value · Payments · Surge Pricing · Risk Monitoring**
 
 ---
 
-## Project Objectives
-
-The platform was designed to answer important business questions such as:
-
-### Revenue & Market Performance
-
-- Which cities generate the most revenue?
-- How does gross revenue compare with net revenue?
-- Which days generate the highest revenue?
-- How does revenue vary across payment methods?
-
-### Driver Performance
-
-- Which drivers generate the most revenue?
-- Which drivers have the highest ratings?
-- How active are drivers?
-- How does driver performance vary across cities?
-
-### Customer Analytics
-
-- What is the lifetime value of riders?
-- Which riders have the highest lifetime value?
-- How does rider value vary across markets?
-
-### Payment Reliability
-
-- How successful are payment attempts?
-- How many failed payments occur?
-- Which payment methods experience payment issues?
-- Are completed trips associated with successful payments?
-
-### Risk & Fraud Monitoring
-
-- Which trips contain potential risk indicators?
-- Are there multiple payment attempts?
-- Are there duplicate successful payments?
-- Are completed trips associated with failed payment attempts?
-- Are there unusually high surge multipliers?
-
-### Engineering Reliability
-
-- Can ingestion and transformation run without manual intervention?
-- Can data quality be validated automatically?
-- Can failed workflows be detected and communicated?
-- Can the pipeline be safely rerun?
-- Can historical data be backfilled?
-
----
 ## Architecture
 
-![BeejanRide Architecture](assets/architecture.png)
+![BeejanRide Architecture](assets/Beejanride.png)
 
 The completed platform follows a modern ELT architecture.
 
@@ -412,9 +358,7 @@ Operating costs would also enable the platform to move beyond revenue analysis i
 | --------- | -------------------------------------------- |
 | dbt       | [`dbt-project.md`](dbt-project.md)           |
 | Airflow   | [`airflow-project.md`](airflow-project.md)   |
-| Airbyte   | [`airbyte/README.md`](airbyte/README.md)     |
 | Terraform | [`terraform/README.md`](terraform/README.md) |
-| Power BI  | [`powerbi/README.md`](powerbi/README.md)     |
 
 ---
 
