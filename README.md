@@ -49,7 +49,7 @@ The completed platform follows a modern ELT architecture.
 ---
 
 ## Data Flow
-### 1. Source
+#### 1. Source
 
 Operational data originates from a PostgreSQL database hosted in Supabase.
 
@@ -71,17 +71,36 @@ Initial source investigation was performed to understand:
 - Potential business anomalies
 
 
-### 2. Infrastructure
+#### 2. Infrastructure
 
 Terraform is used to provision the required Google Cloud resources and maintain the infrastructure as code.
 
-### 3. Ingestion
+#### 3. Data Ingestion
 
-Airbyte extracts the operational PostgreSQL data and loads it into the BigQuery RAW layer.
+**Airbyte Cloud** replicates the required tables from the Supabase PostgreSQL
+source into the BigQuery `beejanride_raw` dataset.
 
-The RAW layer preserves source-aligned data before transformation.
+Selected streams:
 
-### 4. Transformation
+- `cities_raw`
+- `drivers_raw`
+- `driver_status_events_raw`
+- `riders_raw`
+- `trips_raw`
+- `payments_raw`
+
+The connection runs on a daily schedule, with Airbyte responsible only for
+source replication. Transformations are handled separately by dbt.
+
+Airbyte uses a dedicated GCP service account with:
+
+- `roles/bigquery.jobUser` at project level
+- `roles/bigquery.dataEditor` on the `beejanride_raw` dataset
+
+This keeps Airbyte restricted to the RAW layer and prevents it from writing
+to the STG, INT, or MARTS datasets.
+
+#### 4. Transformation
 
 dbt transforms the RAW data through three analytical layers:
 ```
@@ -111,7 +130,7 @@ The transformation layer includes:
 - Data quality tests
 - Documentation and lineage
 
-### 5. Orchestration
+#### 5. Orchestration
 
 Apache Airflow automates the complete workflow:
 ```
@@ -138,7 +157,7 @@ Monitoring
 Detailed implementation:
 airflow-project.md
 
-### 6. Analytics
+#### 6. Analytics
 
 The final dbt marts are consumed by Power BI.
 
@@ -215,19 +234,19 @@ The source investigation also found the operational dataset to be structurally c
 --- 
 
 ## Design Decisions
-### Layered dbt Architecture
+#### Layered dbt Architecture
 
 RAW, STAGING, INTERMEDIATE, and MARTS layers separate source data from business logic and final analytical models.
 
-### Star Schema
+#### Star Schema
 
 A dimensional model was selected to make analytical queries and Power BI reporting simpler and more intuitive.
 
-### Incremental Processing
+#### Incremental Processing
 
 The trip fact model uses incremental processing to avoid unnecessarily rebuilding unchanged data.
 
-### SCD Type 2
+#### SCD Type 2
 
 A dbt snapshot was implemented for the driver model to track changes to
 `driver_status`, `vehicle_id`, and `rating`.
@@ -237,11 +256,11 @@ the initial snapshot captures the current state of the drivers. The SCD
 Type 2 structure is therefore in place to preserve future changes as
 new source states become available.
 
-### Automated Testing
+#### Automated Testing
 
 Data quality checks run as part of the transformation workflow so that invalid data can be detected before reaching the reporting layer.
 
-### Airflow Orchestration
+#### Airflow Orchestration
 
 Airflow provides a single workflow for ingestion, transformation, testing, and failure handling rather than relying on manual execution.
 
@@ -249,23 +268,23 @@ Airflow provides a single workflow for ingestion, transformation, testing, and f
 
 ## Tradeoffs
 
-### ELT Instead of ETL
+#### ELT Instead of ETL
 
 Transformation occurs after loading into BigQuery.
 
 This keeps the ingestion layer close to the source and allows transformation logic to be developed and tested independently.
 
-### BigQuery Instead of a Local Warehouse
+#### BigQuery Instead of a Local Warehouse
 
 BigQuery provides a scalable analytical environment without requiring management of warehouse infrastructure.
 
 The tradeoff is dependence on a cloud platform and associated usage costs.
 
-### Small Analytical Dataset
+#### Small Analytical Dataset
 
 The current dataset is intentionally small, which makes the project easier to demonstrate and validate but limits the statistical strength of the business conclusions.
 
-### Risk Indicators vs Definitive Fraud
+##### Risk Indicators vs Definitive Fraud
 
 The project identifies potential risk signals such as:
 
@@ -304,6 +323,20 @@ Card payments generated approximately 84% of total revenue in the current sample
 
 These findings are directional because the current dataset contains only 10 trips.
 
+### Power BI Dashboards
+
+#### Executive Overview
+
+The Executive Overview brings together the core business performance indicators across revenue, trips, cities, payment methods, riders, and drivers.
+
+![BeejanRide Executive Overview](assets/overview.png)
+
+#### Operations & Risk
+
+The second dashboard combines driver performance, rider value, payment reliability, and risk monitoring into a single operational view.
+
+![BeejanRide Operations & Risk](assets/operation-risk.png)
+
 ---
 
 ## dbt Lineage
@@ -322,16 +355,15 @@ The repository includes SQL queries demonstrating how the analytical models can 
 
 Examples include:
 
-Revenue by city
-Top drivers by revenue
-Rider lifetime value
-Payment reliability
-Surge impact
-Potential risk/fraud indicators
+- Revenue by city
+- Top drivers by revenue
+- Rider lifetime value
+- Payment reliability
+- Surge impact
+- Potential risk/fraud indicators
 
 See:
-
-queries/analytical_queries.sql
+[dbt/analyses/business_queries.sql](dbt/analyses/business_queries.sql)
 
 ---
 
@@ -356,10 +388,7 @@ Operating costs would also enable the platform to move beyond revenue analysis i
 
 | Component | Documentation                                |
 | --------- | -------------------------------------------- |
-| dbt       | [`dbt-project.md`](dbt-project.md)           |
-| Airflow   | [`airflow-project.md`](airflow-project.md)   |
+| dbt       | [`dbt/README.md`](dbt/README.md)             |
+| Airflow   | [`airflow/README.md`](airflow/README.md)     |
 | Terraform | [`terraform/README.md`](terraform/README.md) |
-
 ---
-
-
