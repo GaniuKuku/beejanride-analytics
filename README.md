@@ -345,7 +345,7 @@ The dbt lineage graph demonstrates how source data flows through the transformat
 
 Detailed dbt implementation:
 
-dbt-project.md
+[`dbt/README.md`](dbt/README.md)
 
 ---
 
