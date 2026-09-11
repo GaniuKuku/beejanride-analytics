@@ -146,16 +146,16 @@ Failures are handled through retry logic and Gmail failure notifications.
 
 The DAG also supports operational requirements such as:
 
-Scheduling
-Dependencies
-Retries
-Backfills
-Idempotent execution
-Failure handling
-Monitoring
+- Scheduling
+- Dependencies
+- Retries
+- Backfills
+- Idempotent execution
+- Failure handling
+- Monitoring
 
 Detailed implementation:
-airflow-project.md
+[`airflow/README.md`](airflow/README.md)
 
 #### 6. Analytics
 
@@ -164,9 +164,15 @@ The final dbt marts are consumed by Power BI.
 The report contains two dashboards:
 
 Executive Overview
-Provides a high-level view of revenue, trips, riders, drivers, payment performance, and city performance.
+Provides a high-level view of 
+- revenue, 
+- trips, 
+- riders, 
+- drivers, 
+- payment performance, and city performance.
 
-Operations, Customers & Risk
+Operations & Risk
+
 Provides deeper analysis of driver performance, rider lifetime value, payment reliability, and potential risk indicators.
 
 ---
@@ -183,14 +189,17 @@ dim_date ─────── fct_trips ─────── dim_rider
                      │
                  dim_city
 ```
-Fact
+
+#### Fact
 
 fct_trips
 
 Contains trip-level measures and analytical indicators such as:
 
 Revenue
-```Net revenue
+
+```
+Net revenue
 Trip duration
 Payment information
 Surge information
@@ -214,13 +223,13 @@ Data quality was incorporated throughout the pipeline rather than treated as a f
 
 The project includes:
 
-Source freshness validation
-Primary key tests
-Relationship validation
-Generic dbt tests
-Custom business-rule tests
-Incremental model validation
-Airflow DAG structural tests
+- Source freshness validation
+- Primary key tests
+- Relationship validation
+- Generic dbt tests
+- Custom business-rule tests
+- Incremental model validation
+- Airflow DAG structural tests
 
 Examples of custom business rules include:
 ```
@@ -251,10 +260,10 @@ The trip fact model uses incremental processing to avoid unnecessarily rebuildin
 A dbt snapshot was implemented for the driver model to track changes to
 `driver_status`, `vehicle_id`, and `rating`.
 
-Because the source dataset does not contain historical driver states,
+*Because the source dataset does not contain historical driver states,
 the initial snapshot captures the current state of the drivers. The SCD
 Type 2 structure is therefore in place to preserve future changes as
-new source states become available.
+new source states become available.*
 
 #### Automated Testing
 
@@ -288,10 +297,11 @@ The current dataset is intentionally small, which makes the project easier to de
 
 The project identifies potential risk signals such as:
 
-Extreme surge
-Multiple payment attempts
-Duplicate successful payments
-Failed payment on completed trips
+- Extreme surge
+- Multiple payment attempts
+- Duplicate successful payments
+- Failed payment on completed trips
+
 These are treated as investigation signals, not proof of fraud.
 
 ---
@@ -311,15 +321,15 @@ The current sample contains 10 trips, generating:
 ```
 ### Key Findings
 
-Leeds is the strongest current market, generating approximately £105 (41%) of total revenue.
+- Leeds is the strongest current market, generating approximately £105 (41%) of total revenue.
 
-Birmingham is currently the weakest market, generating approximately £16, with only 1 of 2 trips completed.
+- Birmingham is currently the weakest market, generating approximately £16, with only 1 of 2 trips completed.
 
-A Leeds trip generated the highest fare at £75, alongside an unusually high 12× surge multiplier, making it a notable pricing outlier.
+- A Leeds trip generated the highest fare at £75, alongside an unusually high 12× surge multiplier, making it a notable pricing outlier.
 
-One completed trip experienced a failed payment followed by a successful retry, demonstrating why payment-attempt performance needs additional context.
+- One completed trip experienced a failed payment followed by a successful retry, demonstrating why payment-attempt performance needs additional context.
 
-Card payments generated approximately 84% of total revenue in the current sample.
+- Card payments generated approximately 84% of total revenue in the current sample.
 
 These findings are directional because the current dataset contains only 10 trips.
 
