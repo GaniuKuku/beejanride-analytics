@@ -461,27 +461,33 @@ The successful run demonstrates the complete:
 ```Airbyte → dbt run → dbt test```
 
 workflow.
+
 ![Successful ELT Run](../assets/elt-graph.png)
 
 #### Failed DAG Run
 
 The intentionally failed run demonstrates that downstream tasks are prevented from executing after a critical transformation failure.
+
 ![Failed ELT Run](../assets/beejanride_elt-graph.png)
 
 #### Gmail Failure Alert
 
 The failure callback successfully delivered an automated notification containing task execution metadata.
+
 ![Gmail Failure Alert](../assets/alert.png)
 
 #### Backfill
 
 The successful backfill demonstrates controlled historical processing with ```catchup=False.```
+
 ![Airflow Backfill](../assets/backfill.png)
 
 #### DAG Validation Tests
 
 The pytest results provide automated validation of the Airflow DAG structure and configuration.
+
 ![Pytest Results](../assets/test.png)
+
 ---
 
 ## Best Practices Applied
