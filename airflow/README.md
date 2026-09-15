@@ -219,8 +219,8 @@ followed by:
 dbt test
 ```
 The existing dbt transformation architecture is:
+
 ```
-Plaintext
 Raw
  ↓
 Staging
@@ -238,6 +238,7 @@ Airflow is responsible for when and in what order the transformations execute, w
 ## Data Quality
 
 The dbt transformation stage is explicitly dependent on successful ingestion:
+
 ```
 Airbyte
    ↓
@@ -245,6 +246,7 @@ dbt run
    ↓
 dbt test
 ```
+
 The dependency:
 
 ```run_dbt >> test_dbt```
