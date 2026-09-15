@@ -42,7 +42,7 @@ The resulting platform supports analysis across:
 
 ## Architecture
 
-![BeejanRide Architecture](assets/Beejanride.png)
+![BeejanRide Architecture](assets/BEEJAN.gif)
 
 The completed platform follows a modern ELT architecture.
 
