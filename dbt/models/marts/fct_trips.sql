@@ -8,7 +8,41 @@
 
 with trips as (
 
-    select *
+    select 
+        trip_id,
+        rider_id,
+        driver_id,
+        city_id,
+        vehicle_id,
+
+        trip_status,
+        payment_method,
+
+        actual_fare_amount,
+        estimated_fare_amount,
+        surge_multiplier,
+
+        corporate_trip_flag,
+
+        requested_at,
+        picked_up_at,
+        dropped_off_at,
+
+        created_at,
+        updated_at,
+
+        successful_payment_amount,
+        successful_payment_fee,
+
+        net_revenue,
+
+        trip_duration_minutes,
+
+        failed_payment_count,
+        multiple_payment_attempts_flag,
+        duplicate_successful_payment_flag,
+        failed_payment_on_completed_trip,
+        extreme_surge_flag
     from {{ ref('int_trips') }}
 
     {% if is_incremental() %}

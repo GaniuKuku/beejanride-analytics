@@ -1,6 +1,15 @@
 with source as (
 
-    select *
+    select 
+        driver_id,
+        city_id,
+        vehicle_id,
+        driver_status,
+        rating,
+        onboarding_date,
+        created_at,
+        updated_at,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'drivers_raw') }}
 
 ),
@@ -8,7 +17,15 @@ with source as (
 deduplicated as (
 
     select
-        *
+        driver_id,
+        city_id,
+        vehicle_id,
+        driver_status,
+        rating,
+        onboarding_date,
+        created_at,
+        updated_at,
+        _airbyte_extracted_at
     from source
     where driver_id is not null
 
@@ -45,5 +62,13 @@ renamed as (
 
 )
 
-select *
+select driver_id,
+       city_id,
+       vehicle_id,
+       driver_status,
+       rating,
+       onboarding_date,
+       created_at,
+       updated_at,
+       ingested_at
 from renamed

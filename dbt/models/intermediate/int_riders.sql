@@ -1,6 +1,10 @@
 with riders as (
 
-    select *
+    select 
+        rider_id,
+        referral_code,
+        signup_date,
+        created_at
     from {{ ref('stg_riders') }}
 
 ),

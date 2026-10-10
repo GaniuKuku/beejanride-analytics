@@ -1,6 +1,11 @@
 with source as (
 
-    select *
+    select 
+        event_id,
+        driver_id,
+        status,
+        event_timestamp,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'driver_status_events_raw') }}
 
 ),
@@ -8,7 +13,11 @@ with source as (
 deduplicated as (
 
     select
-        *
+        event_id,
+        driver_id,
+        status,
+        event_timestamp,
+        _airbyte_extracted_at
     from source
     where event_id is not null
 
@@ -39,5 +48,9 @@ renamed as (
 
 )
 
-select *
+select event_id,
+       driver_id,
+       driver_status,
+       event_timestamp,
+       ingested_at
 from renamed

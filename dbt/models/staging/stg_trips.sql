@@ -1,6 +1,23 @@
 with source as (
 
-    select *
+    select 
+        trip_id,
+        rider_id,
+        driver_id,
+        city_id,
+        vehicle_id,
+        status,
+        payment_method,
+        actual_fare,
+        estimated_fare,
+        surge_multiplier,
+        is_corporate,
+        requested_at,
+        pickup_at,
+        dropoff_at,
+        created_at,
+        updated_at,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'trips_raw') }}
 
 ),
@@ -8,7 +25,23 @@ with source as (
 deduplicated as (
 
     select
-        *
+        trip_id,
+        rider_id,
+        driver_id,
+        city_id,
+        vehicle_id,
+        status,
+        payment_method,
+        actual_fare,
+        estimated_fare,
+        surge_multiplier,
+        is_corporate,
+        requested_at,
+        pickup_at,
+        dropoff_at,
+        created_at,
+        updated_at,
+        _airbyte_extracted_at
     from source
     where trip_id is not null
 
@@ -55,6 +88,22 @@ renamed as (
 
 )
 
-select *
+select trip_id,
+       rider_id,
+       driver_id,
+       city_id,
+       vehicle_id,
+       trip_status,
+       payment_method,
+       actual_fare_amount,
+       estimated_fare_amount,
+       surge_multiplier,
+       is_corporate_trip,
+       requested_at,
+       picked_up_at,
+       dropped_off_at,
+       created_at,
+       updated_at,
+       ingested_at
 from renamed
 

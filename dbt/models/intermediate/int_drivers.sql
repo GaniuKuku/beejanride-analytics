@@ -1,6 +1,15 @@
 with drivers as (
 
-    select *
+    select 
+        driver_id,
+        city_id,
+        vehicle_id,
+        driver_status,
+        rating,
+        onboarding_date,
+        created_at,
+        updated_at,
+        ingested_at
     from {{ ref('stg_drivers') }}
 
 ),

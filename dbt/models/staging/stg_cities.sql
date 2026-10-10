@@ -1,6 +1,11 @@
 with source as (
 
-    select *
+    select 
+        city_id,
+        country,
+        city_name,
+        launch_date,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'cities_raw') }}
 
 ),
@@ -8,7 +13,11 @@ with source as (
 deduplicated as (
 
     select
-        *
+        city_id,
+        country,
+        city_name,
+        launch_date,
+        _airbyte_extracted_at
     from source
     where city_id is not null
 
@@ -39,5 +48,9 @@ renamed as (
 
 )
 
-select *
+select city_id,
+       country,
+       city_name,
+       launch_date,
+       ingested_at
 from renamed

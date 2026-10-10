@@ -1,13 +1,31 @@
 with source as (
 
-    select *
+    select 
+        payment_id,
+        trip_id,
+        amount,
+        fee,
+        currency,
+        payment_status,
+        payment_provider,
+        created_at,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'payments_raw') }}
 
 ),
 
 deduplicated as (
 
-    select *
+    select 
+        payment_id,
+        trip_id,
+        amount,
+        fee,
+        currency,
+        payment_status,
+        payment_provider,
+        created_at,
+        _airbyte_extracted_at
     from source
     where payment_id is not null
 
@@ -45,5 +63,13 @@ renamed as (
 
 )
 
-select *
+select payment_id,
+       trip_id,
+       payment_amount,
+       payment_fee,
+       currency,
+       payment_status,
+       payment_provider,
+       created_at,
+       ingested_at
 from renamed

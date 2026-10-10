@@ -1,6 +1,12 @@
 with source as (
 
-    select *
+    select 
+        rider_id,
+        country,
+        referral_code,
+        signup_date,
+        created_at,
+        _airbyte_extracted_at
     from {{ source('beejanride_raw', 'riders_raw') }}
 
 ),
@@ -8,7 +14,12 @@ with source as (
 deduplicated as (
 
     select
-        *
+        rider_id,
+        country,
+        referral_code,
+        signup_date,
+        created_at,
+        _airbyte_extracted_at
     from source
     where rider_id is not null
 
@@ -40,5 +51,10 @@ renamed as (
 
 )
 
-select *
+select rider_id,
+       country,
+       referral_code,
+       signup_date,
+       created_at,
+       ingested_at
 from renamed

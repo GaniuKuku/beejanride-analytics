@@ -1,6 +1,11 @@
 with payments as (
 
-    select *
+    select 
+        trip_id,
+        payment_status,
+        payment_amount,
+        payment_fee
+
     from {{ ref('stg_payments') }}
 
 ),
